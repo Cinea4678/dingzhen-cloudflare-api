@@ -10,15 +10,17 @@ compatibility_date = "2023-07-24"
 
 # Bind a KV Namespace. Use KV as persistent storage for small key-value pairs.
 # Docs: https://developers.cloudflare.com/workers/runtime-apis/kv
-# [[kv_namespaces]]
-# binding = "MY_KV_NAMESPACE"
-# id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+ [[kv_namespaces]]
+ binding = "FLOW_CONTROL"
+ id = "147a3575bccd42d7bfaec319fd9c989a"
+ preview_id = "9cf3ae9ab3194772b01ce845da45a86c"
 
 # Bind an R2 Bucket. Use R2 to store arbitrarily large blobs of data, such as files.
 # Docs: https://developers.cloudflare.com/r2/api/workers/workers-api-usage/
-# [[r2_buckets]]
-# binding = "MY_BUCKET"
-# bucket_name = "my-bucket"
+ [[r2_buckets]]
+ binding = "STORAGE"
+ bucket_name = "dingzhen"
+ preview_bucket_name = "dingzhen"
 
 # Bind a Queue producer. Use this binding to schedule an arbitrary task that may be processed later by a Queue consumer.
 # Docs: https://developers.cloudflare.com/queues/get-started
