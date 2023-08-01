@@ -11,18 +11,6 @@ https://dingzhen-api.cinea2.workers.dev/get
 限流每分钟15次请求，重申：需要图片集邮箱联系。
 ```
 
-以下是随机五张DJ图片：
-
-![](https://dingzhen-api.cinea2.workers.dev/get)
-
-![](https://dingzhen-api.cinea2.workers.dev/get)
-
-![](https://dingzhen-api.cinea2.workers.dev/get)
-
-![](https://dingzhen-api.cinea2.workers.dev/get)
-
-![](https://dingzhen-api.cinea2.workers.dev/get)
-
 ## 版权、授权
 
 大部分收集自[「一眼丁真」系列表情图中的哪些作品，堪称综合TOP10？](https://www.zhihu.com/question/528239142)，如图片侵犯著作权请联系作者下架，如图片侵犯肖像权请联系GitHub下架仓库。仓库持有者提示你遵守所在地法律，使用API即代表你同意仓库持有者与你使用API的行为极其后果没有任何关系和责任。
