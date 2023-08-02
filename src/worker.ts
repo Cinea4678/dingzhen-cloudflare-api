@@ -27,8 +27,6 @@ export interface Env {
 
 const API_LIMIT_PER_MINUTE = 15;
 
-let LIST_CACHE:R2Object[] = [];
-
 export default {
 	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
 
@@ -36,11 +34,11 @@ export default {
 
 		if (pathname === '/get') {
 			return getImage(request, env, ctx);
-		}else if(pathname === '/update'){
+		} else if (pathname === '/update') {
 			return refresh(request, env, ctx);
 		}
 
-		return new Response('',{status:404});
+		return new Response('', { status: 404 });
 	}
 };
 
@@ -52,16 +50,18 @@ async function getImage(request: Request, env: Env, _ctx: ExecutionContext): Pro
 	if (count > API_LIMIT_PER_MINUTE) {
 		return new Response('Rate limit exceeded', { status: 429 });
 	}
-	await env.FLOW_CONTROL.put(ip, (count + 1).toString(), {expirationTtl: 60});
+	await env.FLOW_CONTROL.put(ip, (count + 1).toString(), { expirationTtl: 60 });
+
+	let LIST_CACHE: string[] = await env.FLOW_CONTROL.get('LIST_CACHE', { type: 'json' }) || [];
 
 	if (LIST_CACHE.length === 0) {
 		return new Response('Object Not Found', { status: 404 });
 	}
 
 	// 返回图片
-	const randomObject = LIST_CACHE[Math.floor(Math.random()*LIST_CACHE.length)];
+	const randomObject = LIST_CACHE[Math.floor(Math.random() * LIST_CACHE.length)];
 
-	const object = await env.STORAGE.get(randomObject.key);
+	const object = await env.STORAGE.get(randomObject);
 
 	if (object === null) {
 		return new Response('Object Not Found', { status: 404 });
@@ -72,15 +72,15 @@ async function getImage(request: Request, env: Env, _ctx: ExecutionContext): Pro
 	headers.set('etag', object.httpEtag);
 
 	return new Response(object.body, {
-		headers,
+		headers
 	});
 }
 
 async function refresh(request: Request, env: Env, _ctx: ExecutionContext): Promise<Response> {
 	const options = {
 		limit: 500,
-		include: ['customMetadata','httpMetadata']
-	}
+		include: ['customMetadata', 'httpMetadata']
+	};
 
 	const listed = await env.STORAGE.list();
 	console.log(listed);
@@ -91,16 +91,16 @@ async function refresh(request: Request, env: Env, _ctx: ExecutionContext): Prom
 	while (truncated) {
 		const next = await env.STORAGE.list({
 			...options,
-			cursor: cursor,
+			cursor: cursor
 		});
 		listed.objects.push(...next.objects);
 
 		truncated = next.truncated;
-		cursor = next.truncated ? next.cursor : undefined
+		cursor = next.truncated ? next.cursor : undefined;
 	}
 
-	LIST_CACHE = listed.objects
+	await env.FLOW_CONTROL.put('LIST_CACHE', JSON.stringify(listed.objects.map(obj=>obj.key)));
 
-	return new Response(`OK ${LIST_CACHE.length} objects`)
+	return new Response(`OK ${listed.objects.length} objects`);
 
 }

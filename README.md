@@ -7,9 +7,10 @@
 API访问：
 
 ```
-https://dingzhen-api.cinea2.workers.dev/get
-限流每分钟15次请求，重申：需要图片集邮箱联系。
+https://dingzhen.cinea.cc/get
 ```
+
+限流为每分钟15次请求；重申：需要图片集邮箱联系。
 
 ## 版权、授权
 
